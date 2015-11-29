@@ -1,0 +1,86 @@
+int stato = 0;
+int stepspr = 4076;
+int nextStep = 0;
+int direzione = 0;
+int bottone;
+int bottone2;
+int vbottone2;
+int curva = 0;
+byte steps[8] = {B1000, B1100, B0100, B0110, B0010, B0011, B0001, B1001};
+void setup() {
+
+pinMode(P1_1,INPUT_PULLUP);
+pinMode(P2_1,INPUT_PULLUP);
+pinMode(11,OUTPUT);
+pinMode(12,OUTPUT);
+pinMode(13,OUTPUT);
+pinMode(14,OUTPUT);
+pinMode(10,OUTPUT);
+pinMode(9,OUTPUT);
+pinMode(8,OUTPUT);
+pinMode(7,OUTPUT);
+stepspr = 2000;    //4076 un giro
+
+}
+void loop(){
+	if(curva == 0)
+	for(int i = 0;stepspr > i;i++){
+	digitalWrite(11, (steps[nextStep] & B1000));
+	digitalWrite(10, (steps[nextStep] & B1000));
+	digitalWrite(12, (steps[nextStep] & B0100));
+	digitalWrite(9, (steps[nextStep] & B0100));
+	digitalWrite(13, (steps[nextStep] & B0010));
+	digitalWrite(8, (steps[nextStep] & B0010));
+	digitalWrite(14, (steps[nextStep] & B0001));
+	digitalWrite(7, (steps[nextStep] & B0001));
+
+	delayMicroseconds(2000);
+
+	if(direzione == 1){
+		nextStep++;
+		if(nextStep == 8)
+		nextStep = 0;
+	}
+	else{
+		nextStep--;
+		if(nextStep == -1)
+		nextStep = 7;
+	}
+	}
+	else
+	for(int i = 0;stepspr > i;i++){
+			digitalWrite(11, (steps[nextStep] & B1000));
+			digitalWrite(7, (steps[nextStep] & B1000));
+			digitalWrite(12, (steps[nextStep] & B0100));
+			digitalWrite(8, (steps[nextStep] & B0100));
+			digitalWrite(13, (steps[nextStep] & B0010));
+			digitalWrite(9, (steps[nextStep] & B0010));
+			digitalWrite(14, (steps[nextStep] & B0001));
+			digitalWrite(10, (steps[nextStep] & B0001));
+
+			delayMicroseconds(2000);
+
+			if(direzione == 1){
+				nextStep++;
+				if(nextStep == 8)
+				nextStep = 0;
+			}
+			else{
+				nextStep--;
+				if(nextStep == -1)
+				nextStep = 7;
+			}
+			}
+	bottone = digitalRead(P1_1);
+	if(bottone == 0)
+		stepspr = 2000; //4076 un giro
+	else
+		stepspr = 0;
+	bottone2 = digitalRead(P2_1);
+		if(bottone2 == 0 && vbottone2 == 1){
+			curva = 1 - curva;
+			delay(200);
+		}
+	vbottone2 = bottone2;
+
+}
