@@ -8,7 +8,7 @@ int ritardo;
 //int perimetro = 79; //inserire il perimetro della ruota in millimetri
 //int velocita = 10; //inserire la velocita in millimetri al secondo
 //int distanza = 230; //inserire la distanza tra le ruote in millemetri
-int spazio;
+uint32_t spazio;
 //int spazioang;
 int angolo = 90; // inserire l'angolo da girare
 int percorso = 100;//inserire la distanza da percorrere in rettilineo in millimetri
