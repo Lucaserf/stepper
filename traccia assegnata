@@ -1,5 +1,6 @@
 int stato = 0;
-int stepspr = 4076;
+int stepspr = 4076; //half step
+//int stepspr = 2038; //full step
 int nextStep = 0;
 int direzione = 0;
 int vbottone2;
@@ -7,15 +8,16 @@ int curva = 0;
 int ritardo;
 //int perimetro = 79; //inserire il perimetro della ruota in millimetri
 //int velocita = 10; //inserire la velocita in millimetri al secondo
-//int distanza = 230; //inserire la distanza tra le ruote in millemetri
-uint32_t spazio;
+//int distanza = 260; //inserire la distanza tra le ruote in millemetri
+int spazio;
 //int spazioang;
 int angolo = 90; // inserire l'angolo da girare
 int percorso = 100;//inserire la distanza da percorrere in rettilineo in millimetri
-byte steps[8] = {B1000, B1100, B0100, B0110, B0010, B0011, B0001, B1001};
+byte steps[8] = {B1000, B1100, B0100, B0110, B0010, B0011, B0001, B1001}; //half step mode
+// byte steps[4] = {B1000,B0100,B0010,B0001}; //full step mode
 void setup() {
 //ritardo = perimetro/velocita * 300;
-ritardo = 2370;
+ritardo = 2500;
 pinMode(11,OUTPUT);
 pinMode(12,OUTPUT);
 pinMode(13,OUTPUT);
@@ -34,7 +36,7 @@ void loop(){
 
 	}
 	else{
-//	spazioang  = distanza * 3.14/(2*360/angolo);
+//	spazioang  = distanza * 3.14/(360/angolo);
 //	spazio = spazioang * stepspr / perimetro;
 	spazio = 9456;
 	stato = 0;
@@ -55,7 +57,7 @@ void loop(){
 
 	delayMicroseconds(ritardo);
 
-	if(direzione == 1){
+	if(direzione == 1){              //half step
 		nextStep++;
 		if(nextStep == 8)
 		nextStep = 0;
@@ -65,6 +67,18 @@ void loop(){
 		if(nextStep == -1)
 		nextStep = 7;
 	}
+
+	/*	if(direzione == 1){              //full step
+			nextStep++;
+			if(nextStep == 4)
+			nextStep = 0;
+		}
+		else{
+			nextStep--;
+			if(nextStep == -1)
+			nextStep = 3;
+		}
+		*/
 	}
 	else
 	for(int i = 0;spazio > i;i++){
@@ -79,15 +93,27 @@ void loop(){
 
 			delayMicroseconds(ritardo);
 
-			if(direzione == 1){
-				nextStep++;
-				if(nextStep == 8)
-				nextStep = 0;
-			}
-			else{
-				nextStep--;
-				if(nextStep == -1)
-				nextStep = 7;
-			}
+				if(direzione == 1){                 //half step
+					nextStep++;
+					if(nextStep == 8)
+					nextStep = 0;
+				}
+				else{
+					nextStep--;
+					if(nextStep == -1)
+					nextStep = 7;
+				}
+
+				/*	if(direzione == 1){                      //full step
+								nextStep++;
+								if(nextStep == 4)
+								nextStep = 0;
+							}
+							else{
+								nextStep--;
+								if(nextStep == -1)
+								nextStep = 3;
+							}
+							*/
 			}
 }
